@@ -13,6 +13,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
 
+  // Mock user data
+  final String userName = "Alex Johnson";
+  final int userLevel = 12;
+  final int userXP = 8420;
+  final int userWins = 27;
+  final int userStreak = 5;
+  final int xpToNextLevel = 1580;
+  final int totalXPForLevel = 10000;
+
   Future<void> _confirmLogout() async {
     final bool? shouldLogout = await showDialog<bool>(
       context: context,
@@ -92,14 +101,59 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            const Text('SeedUp'),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'SeedUp',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Welcome back, $userName!',
+                  style: const TextStyle(fontSize: 12, color: Colors.white70),
+                ),
+              ],
+            ),
           ],
         ),
         actions: [
+          Stack(
+            children: [
+              IconButton(
+                tooltip: 'Notifications',
+                onPressed: () {
+                  // TODO: Navigate to notifications
+                },
+                icon: const Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.white,
+                ),
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ],
+          ),
           IconButton(
-            tooltip: 'Log out',
-            onPressed: _confirmLogout,
-            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Settings',
+            onPressed: () {
+              // TODO: Navigate to settings
+            },
+            icon: const Icon(Icons.settings_outlined, color: Colors.white),
           ),
         ],
       ),
@@ -138,52 +192,190 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 16),
+
+                            // XP Progress Bar
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.indigo.shade50,
+                                    Colors.indigo.shade100,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Level $userLevel',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$userXP / $totalXPForLevel XP',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  LinearProgressIndicator(
+                                    value: (userXP % 1000) / 1000,
+                                    backgroundColor: Colors.grey.shade300,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.indigo.shade600,
+                                    ),
+                                    minHeight: 8,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '$xpToNextLevel XP to next level',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 16),
+
+                            // Stats Row
                             SizedBox(
-                              height: 64,
+                              height:
+                                  90, // Increased height to prevent overflow
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ), // Add padding
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     _CompactStatTile(
                                       title: 'Level',
-                                      value: '12',
+                                      value: userLevel.toString(),
                                       icon: Icons.stacked_bar_chart,
+                                      color: Colors.blue,
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     _CompactStatTile(
                                       title: 'XP',
-                                      value: '8,420',
+                                      value:
+                                          '${(userXP / 1000).toStringAsFixed(1)}K',
                                       icon: Icons.bolt_outlined,
+                                      color: Colors.orange,
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     _CompactStatTile(
                                       title: 'Wins',
-                                      value: '27',
+                                      value: userWins.toString(),
                                       icon: Icons.emoji_events_outlined,
+                                      color: Colors.amber,
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     _CompactStatTile(
                                       title: 'Streak',
-                                      value: '5🔥',
+                                      value: '$userStreak🔥',
                                       icon:
                                           Icons.local_fire_department_outlined,
+                                      color: Colors.red,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
+
                             const SizedBox(height: 16),
+
+                            // Achievement Badges
+                            const Text(
+                              'Recent Achievements',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              height:
+                                  70, // Increased height to prevent overflow
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ), // Add padding
+                                children: const [
+                                  _AchievementBadge(
+                                    icon: Icons.star,
+                                    title: 'First Win',
+                                    color: Colors.amber,
+                                  ),
+                                  SizedBox(width: 8),
+                                  _AchievementBadge(
+                                    icon: Icons.speed,
+                                    title: 'Speed Master',
+                                    color: Colors.green,
+                                  ),
+                                  SizedBox(width: 8),
+                                  _AchievementBadge(
+                                    icon: Icons.school,
+                                    title: 'Scholar',
+                                    color: Colors.purple,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 16),
+
+                            // Action Buttons
                             Row(
                               children: [
-                                FilledButton(
-                                  onPressed: () {},
-                                  child: const Text('Start New Game'),
+                                Expanded(
+                                  child: FilledButton.icon(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/classes');
+                                    },
+                                    icon: const Icon(Icons.play_arrow),
+                                    label: const Text('Start Learning'),
+                                    style: FilledButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(width: 12),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  child: const Text('Continue'),
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/leaderboard',
+                                      );
+                                    },
+                                    icon: const Icon(Icons.leaderboard),
+                                    label: const Text('Leaderboard'),
+                                    style: OutlinedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -210,17 +402,22 @@ class _CompactStatTile extends StatelessWidget {
   final String title;
   final String value;
   final IconData icon;
+  final Color color;
 
   const _CompactStatTile({
     required this.title,
     required this.value,
     required this.icon,
+    this.color = Colors.indigo,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 12,
+      ), // Increased vertical padding
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(12),
@@ -229,14 +426,17 @@ class _CompactStatTile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: Colors.indigo),
+          Icon(icon, size: 18, color: color),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // Prevent overflow
             children: [
               Text(
                 title,
                 style: const TextStyle(fontSize: 11, color: Colors.black54),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
                 value,
@@ -244,8 +444,58 @@ class _CompactStatTile extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AchievementBadge extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final Color color;
+
+  const _AchievementBadge({
+    required this.icon,
+    required this.title,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 80,
+      height: 65, // Fixed height to prevent overflow
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min, // Prevent overflow
+        children: [
+          Icon(icon, color: color, size: 20), // Slightly smaller icon
+          const SizedBox(height: 4),
+          Flexible(
+            // Use Flexible to prevent overflow
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

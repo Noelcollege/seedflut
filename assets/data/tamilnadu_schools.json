@@ -1,0 +1,12 @@
+[
+  { "id": "tn-001", "name": "Chennai Higher Secondary School", "city": "Chennai", "district": "Chennai" },
+  { "id": "tn-002", "name": "Kendriya Vidyalaya IIT Madras", "city": "Chennai", "district": "Chennai" },
+  { "id": "tn-003", "name": "PS Senior Secondary School", "city": "Mylapore", "district": "Chennai" },
+  { "id": "tn-004", "name": "DAV Boys Senior Secondary School", "city": "Gopalapuram", "district": "Chennai" },
+  { "id": "tn-005", "name": "Government Higher Secondary School", "city": "Coimbatore", "district": "Coimbatore" },
+  { "id": "tn-006", "name": "Chinmaya Vidyalaya", "city": "Coimbatore", "district": "Coimbatore" },
+  { "id": "tn-007", "name": "SSVM World School", "city": "Mettupalayam", "district": "Coimbatore" },
+  { "id": "tn-008", "name": "St. Joseph's Higher Secondary School", "city": "Trichy", "district": "Tiruchirappalli" },
+  { "id": "tn-009", "name": "Bishop Heber Higher Secondary School", "city": "Trichy", "district": "Tiruchirappalli" },
+  { "id": "tn-010", "name": "KVS Air Force Station Sulur", "city": "Sulur", "district": "Coimbatore" }
+]
