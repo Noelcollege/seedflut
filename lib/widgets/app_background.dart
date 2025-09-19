@@ -2,32 +2,6 @@ import 'package:flutter/material.dart';
 
 class AppBackground extends StatelessWidget {
   final Widget child;
-
-  const AppBackground({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF0D47A1),
-            Color(0xFF1976D2),
-            Color(0xFF42A5F5),
-          ],
-        ),
-      ),
-      child: child,
-    );
-  }
-}
-
-import 'package:flutter/material.dart';
-
-class AppBackground extends StatelessWidget {
-  final Widget child;
   final List<Color> colors;
   final String? imageAsset;
   final double overlayOpacity;
@@ -77,7 +51,7 @@ class AppBackground extends StatelessWidget {
             );
           },
         ),
-        Container(color: Colors.black.withOpacity(overlayOpacity)),
+        Container(color: Colors.black.withValues(alpha: overlayOpacity)),
         child,
       ],
     );
